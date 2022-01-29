@@ -116,16 +116,15 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 # Feature extractor
 #
 def extract_features(model):
-
+    model.to(device)
     model.eval()
     num_images = len(image_dataset)
     count = 0
     for index, (inputs, labels) in enumerate(dataloader_for_feature_extraction):
         print('Features extracted for {} out of {} images'.format(count,num_images))
-        #inputs = inputs.to(device)
-        #labels = labels.to(device)
+        inputs = inputs.to(device)
+        labels = labels.to(device)
         inputs = inputs.float()
-        outputs = model(inputs).view(-1,2048)
         with torch.set_grad_enabled(False):
             outputs = model(inputs)
             
